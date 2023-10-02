@@ -50,8 +50,10 @@
         </ListBox>
 
         <Image x:Name="logoGeneral" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="119" Source="/clipart16522.png"/>
-        <TextBox x:Name="TextBoxStaff_Id" HorizontalAlignment="Left" Margin="360,173,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="TextBoxStaff_Name" HorizontalAlignment="Left" Margin="360,269,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="TextBoxStaff_Id" TextChanged="FilterTextBoxStaffId_TextChanged" PreviewTextInput="KeyPressTextBoxStaff_Id" 
+                 HorizontalAlignment="Left" Margin="360,173,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="TextBoxStaff_Name"  TextChanged="FilterTextBoxStaffName_TextChanged" PreviewTextInput="KeyPressTextBoxStaff_Name" 
+                 HorizontalAlignment="Left" Margin="360,269,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="LabelStaff_Id" Content="Staff ID" HorizontalAlignment="Left" Margin="360,142,0,0" VerticalAlignment="Top"/>
         <Label x:Name="LabelStaff_Name" Content="Staff Name" HorizontalAlignment="Left" Margin="360,243,0,0" VerticalAlignment="Top"/>
 

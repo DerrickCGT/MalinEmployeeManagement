@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,8 +25,7 @@ namespace General
     public partial class GeneralGUI : Window
     {
         Dictionary<int, string> MasterFile = new Dictionary<int, string>();
-
-
+        
         public GeneralGUI()
         {
             InitializeComponent();
@@ -90,12 +90,78 @@ namespace General
         {
             // Set the ListBox's ItemsSource to the loaded dictionary
             listBoxData.ItemsSource = MasterFile;
-            listBoxFilter.ItemsSource = MasterFile;
+            
         }
 
         private void TerminateProgram()
         {
             Close();
+        }
+
+        private void FilterStaffId()
+        {
+            listBoxFilter.ItemsSource = null;
+
+            string input = TextBoxStaff_Id.Text;
+
+            var filterList = MasterFile.Where(kv => kv.Key.ToString().Contains(input)).ToList();
+
+            listBoxFilter.ItemsSource = filterList;
+
+            //foreach (var item in staffData)
+            //{
+            //    if (item.Key.ToString().Contains(filterText))
+            //    {
+            //        listBoxFilter.Items.Add(item);
+            //    }
+            //}
+        }
+
+        private void FilterStaffName()
+        {
+            listBoxFilter.ItemsSource = null;
+
+            string input = TextBoxStaff_Name.Text;
+
+            var filterList = MasterFile.Where(kv => kv.Value.Contains(input)).ToList();
+
+            listBoxFilter.ItemsSource = filterList;
+        }
+
+        private void KeyPressTextBoxStaff_Id(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[0-9]+$");
+
+            if (!regex.IsMatch(e.Text))
+            {
+                e.Handled = true; // Block non-numeric input                
+            }
+
+            if (e.Text != "7" && TextBoxStaff_Id.Text.Length == 0)
+            {
+                e.Handled = true; // Only allow "7" on the first index as requirement for UK phone number
+            }
+        }
+
+        private void FilterTextBoxStaffId_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FilterStaffId();
+        }
+        
+        private void KeyPressTextBoxStaff_Name(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[a-zA-Z]");
+
+            if (!regex.IsMatch(e.Text))
+            {
+                e.Handled = true; // Block non-numeric input                
+            }
+
+        }
+
+        private void FilterTextBoxStaffName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FilterStaffName();
         }
     }
 }
