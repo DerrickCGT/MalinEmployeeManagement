@@ -8,33 +8,52 @@
         Title="General" Height="450" Width="800">
     <Grid>
 
-        
 
-        <ScrollViewer Margin="67,99,561,67">
-            <ListBox x:Name="listBoxData" IsHitTestVisible="False">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <!-- Column definitions for key and value -->
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+        <ListBox x:Name="listBoxData" IsHitTestVisible="False" BorderBrush="#FFABADB3" Margin="67,99,473,67" Foreground="#FFABADB3">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <!-- Column definitions for key and value -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                            <!-- Key -->
-                            <TextBlock Text="{Binding Key, StringFormat={}{0}:}" Grid.Column="0" Margin="5"/>
+                        <!-- Key -->
+                        <TextBlock Text="{Binding Key, StringFormat={}{0}:}" Grid.Column="0" Margin="5"/>
 
-                            <!-- Value -->
-                            <TextBlock Text="{Binding Value}" Grid.Column="1" Margin="5"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
+                        <!-- Value -->
+                        <TextBlock Text="{Binding Value}" Grid.Column="1" Margin="5"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
-        <Button x:Name="LoadButton" Content="Load" HorizontalAlignment="Left" Margin="133,388,0,0" VerticalAlignment="Top" Height="20" Width="40" Click="LoadButton_Click"/>
+        <ListBox x:Name="listBoxFilter" Margin="501,99,22,67" BorderBrush="Black">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <!-- Column definitions for key and value -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Key -->
+                        <TextBlock Text="{Binding Key, StringFormat={}{0}:}" Grid.Column="0" Margin="5"/>
+
+                        <!-- Value -->
+                        <TextBlock Text="{Binding Value}" Grid.Column="1" Margin="5"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <Image x:Name="logoGeneral" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="119" Source="/clipart16522.png"/>
+        <TextBox x:Name="TextBoxStaff_Id" HorizontalAlignment="Left" Margin="360,173,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="TextBoxStaff_Name" HorizontalAlignment="Left" Margin="360,269,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="LabelStaff_Id" Content="Staff ID" HorizontalAlignment="Left" Margin="360,142,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="LabelStaff_Name" Content="Staff Name" HorizontalAlignment="Left" Margin="360,243,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

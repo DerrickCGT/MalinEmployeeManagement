@@ -23,56 +23,79 @@ namespace General
     /// </summary>
     public partial class GeneralGUI : Window
     {
-        Dictionary<string, string> staffData = new Dictionary<string, string>();
+        Dictionary<int, string> MasterFile = new Dictionary<int, string>();
+
 
         public GeneralGUI()
         {
             InitializeComponent();
+            //this.KeyDown += GeneralGUI_KeyDown;
+            //RoutedCommand loadCmd = new RoutedCommand();
+            //loadCmd.InputGestures.Add(new KeyGesture(Key.L, ModifierKeys.Alt));
+            //CommandBindings.Add(new CommandBinding(loadCmd, LoadStaffData));
+            ShortCut_Command(Key.L, LoadCsvFile);
+            ShortCut_Command(Key.T, TerminateProgram);
         }
 
+        //private void GeneralGUI_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    if (e.Key == Key.L && (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
+        //    {
+        //        LoadStaffData();
+        //    }
+        //}
 
-
-        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        private void ShortCut_Command(Key input, Action function)
         {
-            // Create an OpenFileDialog to allow the user to select a CSV file
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
+            RoutedCommand command = new RoutedCommand();
+            command.InputGestures.Add(new KeyGesture(input, ModifierKeys.Alt));
+            CommandBindings.Add(new CommandBinding(command, (sender, e) => function()));
+        }
 
-            if (openFileDialog.ShowDialog() == true)
+        private void LoadCsvFile()
+        {
+            // Read the selected CSV file
+            string filePath = Environment.CurrentDirectory + "\\MalinStaffNamesV2.csv";
+
+            try
             {
-                // Read the selected CSV file
-                string filePath = openFileDialog.FileName;   
-
-                try
+                using (StreamReader reader = new StreamReader(filePath))
                 {
-                    using (StreamReader reader = new StreamReader(filePath))
+                    // Read and process each line in the CSV file
+                    while (!reader.EndOfStream)
                     {
-                        // Read and process each line in the CSV file
-                        while (!reader.EndOfStream)
-                        {
-                            string line = reader.ReadLine();
-                            string[] columns = line.Split(','); // Assuming CSV is comma-separated
+                        string line = reader.ReadLine();
+                        string[] columns = line.Split(','); // Assuming CSV is comma-separated
 
-                            if (columns.Length >= 2)
-                            {
-                                string key = columns[0].Trim();
-                                string value = columns[1].Trim();
+                        if (columns.Length >= 2)
+                        {                            
+                            int key = int.Parse(columns[0].Trim());
+                            string value = columns[1].Trim();
 
-                                // Add key-value pair to the dictionary
-                                staffData[key] = value;
-                            }
+                            // Add key-value pair to the dictionary
+                            MasterFile[key] = value;
                         }
                     }
 
-                    // Set the ListBox's ItemsSource to the loaded dictionary
-                    listBoxData.ItemsSource = myDictionary;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error reading CSV file: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DisplayData();
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error reading CSV file: " + filePath + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
+        private void DisplayData()
+        {
+            // Set the ListBox's ItemsSource to the loaded dictionary
+            listBoxData.ItemsSource = MasterFile;
+            listBoxFilter.ItemsSource = MasterFile;
+        }
+
+        private void TerminateProgram()
+        {
+            Close();
         }
     }
 }
