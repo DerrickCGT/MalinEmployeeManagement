@@ -121,7 +121,7 @@ namespace General
         {
             listBoxFilter.ItemsSource = null;
 
-            string input = TextBoxStaff_Name.Text;
+            string input = TextBoxStaff_Name.Text.ToLower();
 
             var filterList = MasterFile.Where(kv => kv.Value.Contains(input)).ToList();
 
