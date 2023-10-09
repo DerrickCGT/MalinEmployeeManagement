@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Admin\Admin.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="clipart16522.png" />
   </ItemGroup>
 
