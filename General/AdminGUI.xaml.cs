@@ -25,6 +25,7 @@ namespace General
         string csvFilePath = Environment.CurrentDirectory + "\\MalinStaffNamesV2.csv";
         public int selectedStaffId;
 
+        // Method to initialise AdminGUI
         public AdminGUI(Dictionary<int, string> masterFile, string id)
         {
             InitializeComponent();
@@ -42,8 +43,8 @@ namespace General
             ShortCut_Command(Key.C, ModifierKeys.Alt, CreateStaff);
             ShortCut_Command(Key.U, ModifierKeys.Alt, UpdateStaff);
             ShortCut_Command(Key.G, ModifierKeys.Alt, GenerateNewStaffId);
-            ShortCut_Command(Key.L, ModifierKeys.Alt, AdminControlClose);
-            ShortCut_Command(Key.S, ModifierKeys.Alt, AdminControlClose);
+            ShortCut_Command(Key.L, ModifierKeys.Alt, AdminGUIClose);
+            ShortCut_Command(Key.S, ModifierKeys.Alt, SaveCsvFile);
             ShortCut_Command(Key.N, ModifierKeys.Alt, ClearTextBox_staffName);
         }
 
@@ -55,6 +56,7 @@ namespace General
             CommandBindings.Add(new CommandBinding(command, (sender, e) => function()));
         }
 
+        // 5.2.	Create a method that will receive the Staff ID from the General GUI and then populate text boxes with the related data. 
         private void DisplayStaffData()
         {
             if (_masterFile.ContainsKey(selectedStaffId))
@@ -72,25 +74,9 @@ namespace General
                 StatusBarFeedback("Ready", "No existing record selected. Input a new staff name to create a record."); }
         }
 
-        private void GenerateNewStaffId()
-        {
-            if (string.IsNullOrEmpty(TextBoxStaff_Id.Text))
-            {
-                Random random = new Random();
-                int generatedId;
-
-                do
-                {
-                    generatedId = random.Next(700000000, 799999999);
-                } while (_masterFile.ContainsKey(generatedId));
-
-                TextBoxStaff_Id.Text = generatedId.ToString();
-                StatusBarFeedback("Succesful", $"New Staff ID is generated: {generatedId}");
-            }
-        }
-
-        // check if the Id input is random 203202303 number, not start with 7
-
+        // 5.3.	Create a method that will create a new Staff ID and input the staff name from the related text box.
+        // The Staff ID must be unique starting with 77xxxxxxx while the staff name may be duplicated.
+        // The new staff member must be added to the Dictionary data structure.               
         private void CreateStaff()
         {
 
@@ -113,6 +99,25 @@ namespace General
             }
         }
 
+        // Method to generate new staffID as the TextBoxStaff_Id is readonly as per client requirement.
+        private void GenerateNewStaffId()
+        {
+            if (string.IsNullOrEmpty(TextBoxStaff_Id.Text))
+            {
+                Random random = new Random();
+                int generatedId;
+
+                do
+                {
+                    generatedId = random.Next(700000000, 799999999);
+                } while (_masterFile.ContainsKey(generatedId));
+
+                TextBoxStaff_Id.Text = generatedId.ToString();
+                StatusBarFeedback("Succesful", $"New Staff ID is generated: {generatedId}");
+            }
+        }
+
+        // Method to check if the input TextBoxStaff_Name is valid including first and last name.
         private bool IsValidStaffName(string staffName)
         {
             string[] name = staffName.Split(" ");
@@ -132,8 +137,7 @@ namespace General
             }
         }
 
-        
-
+        // 5.4.	Create a method that will Update the name of the current Staff ID.
         private void UpdateStaff()
         {
 
@@ -154,18 +158,21 @@ namespace General
 
         }
 
+        // 5.5.	Create a method that will Remove the current Staff ID and clear the text boxes.
         private void RemoveStaff()
         {
             if (int.TryParse(TextBoxStaff_Id.Text, out int removedId) && _masterFile.ContainsKey(removedId))
             {
                 _masterFile.Remove(removedId);
+                TextBoxStaff_Id.Clear();
+                TextBoxStaff_Name.Clear();
                 StatusBarFeedback("Successful", $"Staff record is deleted! Staff ID: {removedId}");
             }
         }
 
+        // 5.6.	Create a method that will save changes to the csv file, this method should be called as the Admin GUI closes.
         private void SaveCsvFile()
         {
-
             try
             {
                 using (StreamWriter writer = new StreamWriter(csvFilePath))
@@ -185,12 +192,14 @@ namespace General
             }
         }
 
-        private void AdminControlClose()
+        // 5.7.	Create a method that will close the Admin GUI when the Alt + L keys are pressed.
+        private void AdminGUIClose()
         {
             SaveCsvFile();
             Close();
         }
 
+        // Method to clear TextBoxStaff_Name
         private void ClearTextBox_staffName()
         {
             TextBoxStaff_Name.Clear();
@@ -198,18 +207,22 @@ namespace General
             StatusBarFeedback("Ready", "Staff Name Text Box is cleared.");
         }
 
+        // Method to create customize command shortcut for Create Only.
         private void LabelCreate()
         {
-            LabelCommand.Content = "Keyboard Command:\nAlt - L: Save & Close Admin Control\nAlt - S : Save Data\nAlt - C: Create Staff" +
+            LabelCommand.Content = "Keyboard Command:\nAlt - L: Save & Close Admin Control\nAlt - S : Save Data to Csv\nAlt - C: Create Staff" +
                 "\nAlt - G: Generate New Staff Id\nAlt - N: Clear and Focus Staff Name\nTab: Navigate Control";
         }
 
+        // Method to create customize command shortcut for Update and Remove Only.
         private void LabelUpdateOrRemove()
         {
-            LabelCommand.Content = "Keyboard Command:\nAlt - L: Save & Close Admin Control\nAlt - S : Save Data\nAlt - R: Remove Staff" +
+            LabelCommand.Content = "Keyboard Command:\nAlt - L: Save & Close Admin Control\nAlt - S : Save Data to Csv\nAlt - R: Remove Staff" +
                 "\nAlt - U: Update Staff\nAlt - N: Clear and Focus Staff Name\nTab: Navigate Control";
         }
 
+        // 5.8.	Add suitable error trapping and user feedback via a status strip or similar to ensure a fully functional User Experience.
+        // Make all methods private and ensure the Dictionary is updated. 
         private void StatusBarFeedback(string status_message, string feedback_message)
         {
             TextBlockStatus.Text = status_message;

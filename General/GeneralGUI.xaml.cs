@@ -207,7 +207,7 @@ namespace General
         }
 
         // 4.8.	Create a method for the filtered and selectable list box which will populate the two text boxes when a staff record is selected.
-        // Utilise the Tab and keyboard keys with keyboard shortcut of Alt+F.
+        // Utilise the Tab and keyboard keys with keyboard shortcut of Ctrl+F.
         private void SelectStaffData()
         {
             if (listBoxFilter.SelectedIndex >= 0 && listBoxFilter.SelectedItem != null)
@@ -221,6 +221,11 @@ namespace General
             }
         }
 
+        // 4.9.	Create a method that will open the Admin GUI when the Alt + A keys are pressed.
+        // Ensure the General GUI sends the currently selected Staff ID and Staff Name to the Admin GUI for Update and Delete purposes and is opened as modal.
+        // Create modified logic to open the Admin GUI to Create a new user when the Staff ID 77 and the Staff Name is empty.
+        // Read the appropriate criteria in the Admin GUI for further information.
+        // Utilise the Tab and keyboard keys with keyboard shortcut of Alt+A.
         private void OpenAdminControl()
         {
             AdminGUI adminControl = new AdminGUI(MasterFile, TextBoxStaff_Id.Text);
@@ -228,12 +233,15 @@ namespace General
             StatusBarClear();
         }
 
+        // 4.10. Add suitable error trapping and user feedback via a status strip or similar to ensure a fully functional User Experience.
+        // Make all methods private and ensure the Dictionary is static and public.
         private void StatusBarFeedback(string status_message, string feedback_message)
         {
             TextBlockStatus.Text = status_message;
             TextBlockFeedback.Text = feedback_message;
         }
 
+        // Method to clear StatusBar
         private void StatusBarClear()
         {
             TextBlockStatus.Text = "Ready";
