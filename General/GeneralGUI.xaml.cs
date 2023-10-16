@@ -1,5 +1,4 @@
-﻿using Admin;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +26,7 @@ namespace General
     {
         // 4.1.	Create a Dictionary data structure with a TKey of type integer and a TValue of type string, name the new data structure “MasterFile”.
         public static Dictionary<int, string> MasterFile = new Dictionary<int, string>();
-        string csvFilePath = "C:\\Users\\30066568\\Source\\Repos\\MalinEmployeeManagement\\General\\MalinStaffNamesV2.csv";
+        string csvFilePath = Environment.CurrentDirectory + "\\MalinStaffNamesV2.csv";
 
 
         public GeneralGUI()
@@ -42,10 +41,8 @@ namespace General
             ShortCut_Command(Key.Q, ModifierKeys.Control, TerminateProgram);
             ShortCut_Command(Key.I, ModifierKeys.Control, ClearTextBox_StaffId);
             ShortCut_Command(Key.N, ModifierKeys.Control, ClearTextBox_StaffName);
-            ShortCut_Command(Key.F, ModifierKeys.Alt, DisplayStaffData);
+            ShortCut_Command(Key.F, ModifierKeys.Control, SelectStaffData);
             ShortCut_Command(Key.A, ModifierKeys.Alt, OpenAdminControl);
-            ShortCut_Command(Key.P, ModifierKeys.Alt, clearListBoxData);
-
 
         }
 
@@ -65,17 +62,12 @@ namespace General
             CommandBindings.Add(new CommandBinding(command, (sender, e) => function()));
         }
 
-        private void clearListBoxData()
-        {
-            listBoxData.ItemsSource = null;
-        }
-
         // 4.2.	Create a method that will read the data from the .csv file into the Dictionary data structure when the GUI loads. 
         // Utilise a keyboard shortcut of Ctrl+T.
         private void LoadCsvFile()
         {
             // Read the selected CSV file
-            
+            MasterFile.Clear();
             try
             {
                 using (StreamReader reader = new StreamReader(csvFilePath))
@@ -94,12 +86,14 @@ namespace General
                             // Add key-value pair to the dictionary
                             MasterFile[key] = value;
                         }
+                        StatusBarFeedback("Sucessful", $"CSV File loaded: {csvFilePath}");
                     }                    
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error reading CSV file: " + csvFilePath + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                StatusBarFeedback("Error", $"Failed to read CSV file: {csvFilePath}");
             }
         }
 
@@ -109,8 +103,7 @@ namespace General
             listBoxData.ItemsSource = null;
             LoadCsvFile();
             // Set the ListBox's ItemsSource to the loaded dictionary
-            listBoxData.ItemsSource = MasterFile;
-            
+            listBoxData.ItemsSource = MasterFile;            
         }
 
         // Method to terminate the program.
@@ -200,6 +193,8 @@ namespace General
         {
             TextBoxStaff_Name.Clear();
             TextBoxStaff_Name.Focus();
+            StatusBarFeedback("Ready", "TextBox Staff Name is cleared.");
+
         }
 
         // 4.7.	Create a method for the Staff ID text box which will clear the contents and place the focus into the text box.
@@ -208,11 +203,12 @@ namespace General
         {
             TextBoxStaff_Id.Clear();
             TextBoxStaff_Id.Focus();
+            StatusBarFeedback("Ready", "TextBox Staff ID is cleared.");
         }
 
         // 4.8.	Create a method for the filtered and selectable list box which will populate the two text boxes when a staff record is selected.
         // Utilise the Tab and keyboard keys with keyboard shortcut of Alt+F.
-        private void DisplayStaffData()
+        private void SelectStaffData()
         {
             if (listBoxFilter.SelectedIndex >= 0 && listBoxFilter.SelectedItem != null)
             {
@@ -221,18 +217,28 @@ namespace General
                
                 TextBoxStaff_Id.Text = selectedItem.Key.ToString();
                 TextBoxStaff_Name.Text = selectedItem.Value;
-
+                StatusBarFeedback("Successful", $"Staff ID: {selectedItem.Key} is selected.");
             }
         }
 
         private void OpenAdminControl()
         {
-            AdminGUI adminControl = new AdminGUI(ref MasterFile, TextBoxStaff_Id.Text);
+            AdminGUI adminControl = new AdminGUI(MasterFile, TextBoxStaff_Id.Text);
             adminControl.ShowDialog();
+            StatusBarClear();
         }
 
+        private void StatusBarFeedback(string status_message, string feedback_message)
+        {
+            TextBlockStatus.Text = status_message;
+            TextBlockFeedback.Text = feedback_message;
+        }
 
-
+        private void StatusBarClear()
+        {
+            TextBlockStatus.Text = "Ready";
+            TextBlockFeedback.Text = "";
+        }
 
     }
 }
