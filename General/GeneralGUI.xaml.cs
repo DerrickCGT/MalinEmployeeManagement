@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,7 +42,7 @@ namespace General
             ShortCut_Command(Key.Q, ModifierKeys.Control, TerminateProgram);
             ShortCut_Command(Key.I, ModifierKeys.Control, ClearTextBox_StaffId);
             ShortCut_Command(Key.N, ModifierKeys.Control, ClearTextBox_StaffName);
-            ShortCut_Command(Key.F, ModifierKeys.Control, SelectStaffData);
+            ShortCut_Command(Key.S, ModifierKeys.Control, SelectStaffData);
             ShortCut_Command(Key.A, ModifierKeys.Alt, OpenAdminControl);
 
         }
@@ -68,6 +69,10 @@ namespace General
         {
             // Read the selected CSV file
             MasterFile.Clear();
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             try
             {
                 using (StreamReader reader = new StreamReader(csvFilePath))
@@ -89,6 +94,10 @@ namespace General
                         StatusBarFeedback("Sucessful", $"CSV File loaded: {csvFilePath}");
                     }                    
                 }
+
+                stopwatch.Stop();
+                long elapsed = stopwatch.Elapsed.Ticks;
+                TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
             }
             catch (Exception ex)
             {
@@ -150,10 +159,10 @@ namespace General
                 e.Handled = true; // Block non-numeric input                
             }
 
-            if (e.Text != "7" && TextBoxStaff_Id.Text.Length == 0)
-            {
-                e.Handled = true; // Only allow "7" on the first index as requirement for UK phone number
-            }
+            //if (e.Text != "7" && TextBoxStaff_Id.Text.Length == 0)
+            //{
+            //    e.Handled = true; // Only allow "7" on the first index as requirement for UK phone number
+            //}
         }
 
         // 4.4.	Create a method to filter the Staff Name data from the Dictionary into a second filtered and selectable list box.

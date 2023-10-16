@@ -155,7 +155,6 @@ namespace General
                     return;
                 }
             }
-
         }
 
         // 5.5.	Create a method that will Remove the current Staff ID and clear the text boxes.

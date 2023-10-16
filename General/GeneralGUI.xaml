@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="General" Height="450" Width="800">
     <Grid>
-        
+
         <ListBox x:Name="listBoxData" IsHitTestVisible="False" BorderBrush="#FFABADB3" Margin="50,99,510,50" Foreground="#FFABADB3">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -28,7 +28,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <ListBox x:Name="listBoxFilter" Margin="309,175,257,50" BorderBrush="Black">
+        <ListBox x:Name="listBoxFilter" Margin="309,202,257,50" BorderBrush="Black">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -50,12 +50,12 @@
         <TextBlock HorizontalAlignment="Center" Margin="0,24,0,0" TextWrapping="Wrap" Text="Employee Records Information" VerticalAlignment="Top" FontSize="30" FontFamily="Calibri" Width="382" RenderTransformOrigin="0.273,0.526"/>
         <Image x:Name="logoGeneral" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="119" Source="/clipart16522.png"/>
         <TextBox x:Name="TextBoxStaff_Id" TextChanged="FilterTextBoxStaffId_TextChanged" PreviewTextInput="KeyPressTextBoxStaff_Id" 
-                 HorizontalAlignment="Left" Margin="363,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180"/>
+                 HorizontalAlignment="Left" Margin="310,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210" Height="20"/>
         <TextBox x:Name="TextBoxStaff_Name"  TextChanged="FilterTextBoxStaffName_TextChanged" PreviewTextInput="KeyPressTextBoxStaff_Name" 
-                 HorizontalAlignment="Left" Margin="383,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160"/>
-        <Label x:Name="LabelStaff_Id" Content="Staff ID" HorizontalAlignment="Left" Margin="309,99,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="LabelStaff_Name" Content="Staff Name" HorizontalAlignment="Left" Margin="309,130,0,0" VerticalAlignment="Top"/>
-        <Label Content="Keyboard Command:&#xA;Alt-A: Open Admin Control&#xA;Ctrl-L: Load CSV File&#xA;Ctrl-Q: Terminate Program&#xA;Ctrl-I: Clear and Focus Staff ID&#xA;Ctrl-N: Clear and Focus Staff Name&#xA;Citrl-F: Select a record and Populate&#xA;Tab: Navigate Control" HorizontalAlignment="Left" Height="157" Margin="561,99,0,0" VerticalAlignment="Top" Width="208"/>
+                 HorizontalAlignment="Left" Margin="310,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210" Height="20"/>
+        <Label x:Name="LabelStaff_Id" Content="Staff ID" HorizontalAlignment="Left" Margin="309,95,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="LabelStaff_Name" Content="Staff Name" HorizontalAlignment="Left" Margin="309,139,0,0" VerticalAlignment="Top"/>
+        <Label Content="Keyboard Command:&#xA;Alt-A: Open Admin Control&#xA;Ctrl-L: Load CSV File&#xA;Ctrl-Q: Terminate Program&#xA;Ctrl-I: Clear and Focus Staff ID&#xA;Ctrl-N: Clear and Focus Staff Name&#xA;Citrl-S: Select and Populate a record&#xA;Tab: Navigate Control&#xA;Spacebar: Select" HorizontalAlignment="Left" Height="157" Margin="561,99,0,0" VerticalAlignment="Top" Width="208"/>
 
         <StatusBar Height="25" VerticalAlignment="Bottom">
             <StatusBar.ItemsPanel>
@@ -65,18 +65,22 @@
                             <ColumnDefinition Width="40"/>
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
-            <StatusBarItem>
+            <StatusBarItem Grid.Column="0">
                 <TextBlock Text="Status: "/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="1">
                 <TextBlock x:Name="TextBlockStatus" Text="Ready"/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="2">
-                <TextBlock x:Name="TextBlockFeedback" Text="Error Message"/>
+                <TextBlock x:Name="TextBlockFeedback" Text="Message"/>
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="3">
+                <TextBlock x:Name="TimerTextBlock" Text="Timer"/>
             </StatusBarItem>
         </StatusBar>
 
