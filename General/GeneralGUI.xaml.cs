@@ -126,6 +126,9 @@ namespace General
         // This method must use a text box input and update as each number is entered.The list box must reflect the filtered data in real time.
         private void FilterStaffId()
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             listBoxFilter.ItemsSource = null;
 
             string input = TextBoxStaff_Id.Text;
@@ -133,6 +136,10 @@ namespace General
             var filterList = MasterFile.Where(kv => kv.Key.ToString().Contains(input)).ToList();
 
             listBoxFilter.ItemsSource = filterList;
+
+            stopwatch.Stop();
+            long elapsed = stopwatch.Elapsed.Ticks;
+            TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
 
             //foreach (var item in staffData)
             //{
@@ -169,6 +176,9 @@ namespace General
         // This method must use a text box input and update as each character is entered. The list box must reflect the filtered data in real time.
         private void FilterStaffName()
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             listBoxFilter.ItemsSource = null;
 
             string input = TextBoxStaff_Name.Text.ToLower();
@@ -176,6 +186,10 @@ namespace General
             var filterList = MasterFile.Where(kv => kv.Value.ToLower().Contains(input)).ToList();
 
             listBoxFilter.ItemsSource = filterList;
+
+            stopwatch.Stop();
+            long elapsed = stopwatch.Elapsed.Ticks;
+            TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
         }
 
         // Filter method triggers when input StaffName textbox textChanged
