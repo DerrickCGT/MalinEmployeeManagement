@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,29 +13,22 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
-namespace General
+namespace SortedDictionary
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for GeneralGUI.xaml
     /// </summary>
     public partial class GeneralGUI : Window
     {
-        // 4.1.	Create a Dictionary data structure with a TKey of type integer and a TValue of type string, name the new data structure “MasterFile”.
-        public static Dictionary<int, string> MasterFile = new Dictionary<int, string>();
+        // 4.1.	Create a SortedDictionary data structure with a TKey of type integer and a TValue of type string, name the new data structure “MasterFile”.
+        public static SortedDictionary<int, string> MasterFile = new SortedDictionary<int, string>();
         string csvFilePath = Environment.CurrentDirectory + "\\MalinStaffNamesV2.csv";
 
-        
         public GeneralGUI()
         {
             InitializeComponent();
-            //this.KeyDown += GeneralGUI_KeyDown;
-            //RoutedCommand loadCmd = new RoutedCommand();
-            //loadCmd.InputGestures.Add(new KeyGesture(Key.L, ModifierKeys.Alt));
-            //CommandBindings.Add(new CommandBinding(loadCmd, LoadStaffData));
             DisplayData();
             ShortCut_Command(Key.L, ModifierKeys.Control, DisplayData);
             ShortCut_Command(Key.Q, ModifierKeys.Control, TerminateProgram);
@@ -87,7 +79,7 @@ namespace General
                         string[] columns = line.Split(','); // Assuming CSV is comma-separated
 
                         if (columns.Length >= 2)
-                        {                            
+                        {
                             int key = int.Parse(columns[0].Trim());
                             string value = columns[1].Trim();
 
@@ -95,7 +87,7 @@ namespace General
                             MasterFile[key] = value;
                         }
                         StatusBarFeedback("Sucessful", $"CSV File loaded: {csvFilePath}");
-                    }                    
+                    }
                 }
 
                 stopwatch.Stop();
@@ -109,14 +101,14 @@ namespace General
             }
         }
 
-       
+
         // 4.3.	Create a method to display the Dictionary data into a non-selectable display only list box (ie read only).
         private void DisplayData()
         {
             listBoxData.ItemsSource = null;
             LoadCsvFile();
             // Set the ListBox's ItemsSource to the loaded dictionary
-            listBoxData.ItemsSource = MasterFile;            
+            listBoxData.ItemsSource = MasterFile;
         }
         #endregion                
 
@@ -249,7 +241,7 @@ namespace General
             {
                 // Ref:https://stackoverflow.com/questions/6404520/how-to-get-listbox-selected-item-as-keyvaluepairstring-string-in-c
                 var selectedItem = (KeyValuePair<int, string>)listBoxFilter.SelectedItem;
-               
+
                 TextBoxStaff_Id.Text = selectedItem.Key.ToString();
                 TextBoxStaff_Name.Text = selectedItem.Value;
                 StatusBarFeedback("Successful", $"Staff ID: {selectedItem.Key} is selected.");
@@ -287,7 +279,6 @@ namespace General
             TextBlockFeedback.Text = "";
             TimerTextBlock.Text = "";
         }
-        #endregion
-
+        #endregion       
     }
 }

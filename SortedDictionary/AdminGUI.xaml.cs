@@ -15,19 +15,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace General
+namespace SortedDictionary
 {
     /// <summary>
     /// Interaction logic for AdminGUI.xaml
     /// </summary>
     public partial class AdminGUI : Window
     {
-        private Dictionary<int, string> _masterFile;
+        private SortedDictionary<int, string> _masterFile;
         string csvFilePath = Environment.CurrentDirectory + "\\MalinStaffNamesV2.csv";
         public int selectedStaffId;
 
         // Method to initialise AdminGUI
-        public AdminGUI(Dictionary<int, string> masterFile, string id)
+        public AdminGUI(SortedDictionary<int, string> masterFile, string id)
         {
             InitializeComponent();
             _masterFile = masterFile;
@@ -75,9 +75,10 @@ namespace General
                 TextBoxStaff_Name.Clear();
                 TextBoxStaff_Id.Clear();
                 LabelCreate();
-                StatusBarFeedback("Ready", "No existing record selected. Input a new staff name to create a record."); }
+                StatusBarFeedback("Ready", "No existing record selected. Input a new staff name to create a record.");
+            }
         }
-        
+
         // 5.3.	Create a method that will create a new Staff ID and input the staff name from the related text box.
         // The Staff ID must be unique starting with 77xxxxxxx while the staff name may be duplicated.
         // The new staff member must be added to the Dictionary data structure.               
@@ -108,7 +109,7 @@ namespace General
             {
                 return;
             }
-        }     
+        }
 
         // 5.4.	Create a method that will Update the name of the current Staff ID.
         private void UpdateStaff()
