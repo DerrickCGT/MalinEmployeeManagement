@@ -26,6 +26,9 @@ namespace SortedDictionary
         public static SortedDictionary<int, string> MasterFile = new SortedDictionary<int, string>();
         string csvFilePath = Environment.CurrentDirectory + "\\MalinStaffNamesV2.csv";
 
+        string logFile = "logFile.txt";
+        TextWriterTraceListener traceListener;
+
         public GeneralGUI()
         {
             InitializeComponent();
@@ -37,6 +40,8 @@ namespace SortedDictionary
             ShortCut_Command(Key.S, ModifierKeys.Control, SelectStaffData);
             ShortCut_Command(Key.A, ModifierKeys.Alt, OpenAdminControl);
 
+            traceListener = new TextWriterTraceListener(logFile);
+            Trace.Listeners.Add(traceListener);
         }
 
         #region ShortCut Command
@@ -68,6 +73,8 @@ namespace SortedDictionary
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            long beforeMemory = GC.GetTotalMemory(false);
+
             try
             {
                 using (StreamReader reader = new StreamReader(csvFilePath))
@@ -90,9 +97,14 @@ namespace SortedDictionary
                     }
                 }
 
+                long afterMemory = GC.GetTotalMemory(false);
+                long memoryUsageChange = afterMemory - beforeMemory;
+
                 stopwatch.Stop();
                 long elapsed = stopwatch.Elapsed.Ticks;
                 TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
+
+                Trace.TraceInformation($"Load CSV File- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ms");
             }
             catch (Exception ex)
             {
@@ -211,6 +223,9 @@ namespace SortedDictionary
         // Utilise a keyboard shortcut of Ctrl+Q.
         private void TerminateProgram()
         {
+            traceListener.Flush();
+            traceListener.Close();
+
             Close();
         }
 
@@ -257,9 +272,14 @@ namespace SortedDictionary
         // Utilise the Tab and keyboard keys with keyboard shortcut of Alt+A.
         private void OpenAdminControl()
         {
+
+            traceListener.Flush();
+            traceListener.Close();
+
             AdminGUI adminControl = new AdminGUI(MasterFile, TextBoxStaff_Id.Text);
             adminControl.ShowDialog();
             StatusBarClear();
+
         }
         #endregion
 

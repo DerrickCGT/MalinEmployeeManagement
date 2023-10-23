@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace General
+namespace Dictionary
 {
     /// <summary>
     /// Interaction logic for AdminGUI.xaml
@@ -25,6 +25,9 @@ namespace General
         private Dictionary<int, string> _masterFile;
         string csvFilePath = Environment.CurrentDirectory + "\\MalinStaffNamesV2.csv";
         public int selectedStaffId;
+
+        string logFile = "logFile.txt";
+        TextWriterTraceListener traceListener;
 
         // Method to initialise AdminGUI
         public AdminGUI(Dictionary<int, string> masterFile, string id)
@@ -47,6 +50,9 @@ namespace General
             ShortCut_Command(Key.L, ModifierKeys.Alt, AdminGUIClose);
             ShortCut_Command(Key.S, ModifierKeys.Alt, SaveCsvFile);
             ShortCut_Command(Key.N, ModifierKeys.Alt, ClearTextBox_staffName);
+
+            traceListener = new TextWriterTraceListener(logFile);
+            Trace.Listeners.Add(traceListener);
         }
 
         #region ShortCut Command
@@ -67,7 +73,7 @@ namespace General
             {
                 TextBoxStaff_Id.Text = selectedStaffId.ToString();
                 TextBoxStaff_Name.Text = _masterFile[selectedStaffId];
-                LabelUpdateOrRemove();
+                LabelCreate();
                 StatusBarFeedback("Ready", $"{selectedStaffId} is selected for update or remove.");
             }
             else
@@ -90,22 +96,33 @@ namespace General
             }
             int newStaffId = int.Parse(TextBoxStaff_Id.Text);
 
-            if (IsValidStaffName(TextBoxStaff_Name.Text))
+            if (!_masterFile.ContainsKey(newStaffId))
             {
-                string newStaffName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(TextBoxStaff_Name.Text.ToLower());
+                if (IsValidStaffName(TextBoxStaff_Name.Text))
+                {
+                    string newStaffName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(TextBoxStaff_Name.Text.ToLower());
 
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
+                    long beforeMemory = GC.GetTotalMemory(false);
 
-                _masterFile[newStaffId] = newStaffName;
-                StatusBarFeedback("Successful", $"Staff record is created! New Staff ID: {newStaffId}");
 
-                stopwatch.Stop();
-                long elapsed = stopwatch.Elapsed.Ticks;
-                TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
-            }
+                    _masterFile[newStaffId] = newStaffName;
+                    StatusBarFeedback("Successful", $"Staff record is created! New Staff ID: {newStaffId}");
+
+                    long afterMemory = GC.GetTotalMemory(false);
+                    long memoryUsageChange = afterMemory - beforeMemory;
+
+                    stopwatch.Stop();
+                    long elapsed = stopwatch.Elapsed.Ticks;
+                    TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
+                    Trace.TraceInformation($"Staff Created- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ticks");
+
+                }
+            }           
             else
             {
+                StatusBarFeedback("Error", $"ID: {newStaffId} already existed");
                 return;
             }
         }     
@@ -122,12 +139,18 @@ namespace General
 
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
+                    long beforeMemory = GC.GetTotalMemory(false);
 
                     _masterFile[updatedId] = updatedStaffName;
+
+                    long afterMemory = GC.GetTotalMemory(false);
+                    long memoryUsageChange = afterMemory - beforeMemory;
 
                     stopwatch.Stop();
                     long elapsed = stopwatch.Elapsed.Ticks;
                     TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
+                    Trace.TraceInformation($"Staff Updated- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ticks");
+
 
                     StatusBarFeedback("Successful", $"ID: {updatedId} updated with Staff name: {updatedStaffName}");
                 }
@@ -145,8 +168,12 @@ namespace General
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
+                long beforeMemory = GC.GetTotalMemory(false);
 
                 _masterFile.Remove(removedId);
+
+                long afterMemory = GC.GetTotalMemory(false);
+                long memoryUsageChange = afterMemory - beforeMemory;
 
                 stopwatch.Stop();
                 long elapsed = stopwatch.Elapsed.Ticks;
@@ -155,6 +182,8 @@ namespace General
                 TextBoxStaff_Id.Clear();
                 TextBoxStaff_Name.Clear();
                 StatusBarFeedback("Successful", $"Staff record is deleted! Staff ID: {removedId}");
+                Trace.TraceInformation($"Staff Updated- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ticks");
+
             }
         }
         #endregion
@@ -163,6 +192,8 @@ namespace General
         // Method to generate new staffID as the TextBoxStaff_Id is readonly as per client requirement.
         private void GenerateNewStaffId()
         {
+            TextBoxStaff_Id.Text = String.Empty;
+
             if (string.IsNullOrEmpty(TextBoxStaff_Id.Text))
             {
                 Random random = new Random();
@@ -178,6 +209,7 @@ namespace General
                 StatusBarFeedback("Succesful", $"New Staff ID is generated: {generatedId}");
             }
         }
+
 
         // Method to check if the input TextBoxStaff_Name is valid including first and last name.
         private bool IsValidStaffName(string staffName)
@@ -208,21 +240,26 @@ namespace General
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
+                long beforeMemory = GC.GetTotalMemory(false); 
 
                 using (StreamWriter writer = new StreamWriter(csvFilePath))
                 {
                     foreach (var record in _masterFile)
                     {
-                        writer.WriteLine($"{record.Key},{record.Value}");
-                        StatusBarFeedback("Successful", $"File is saved: {csvFilePath}");
-                    }
+                        writer.WriteLine($"{record.Key},{record.Value}");                        
+                    }                    
 
                 }
+                StatusBarFeedback("Successful", $"File is saved: {csvFilePath}");
+
+                long afterMemory = GC.GetTotalMemory(false);
+                long memoryUsageChange = afterMemory - beforeMemory;
 
                 stopwatch.Stop();
                 long elapsed = stopwatch.Elapsed.Ticks;
                 TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
 
+                Trace.TraceInformation($"Staff Created- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ticks");
             }
             catch (Exception ex)
             {
@@ -234,6 +271,8 @@ namespace General
         // 5.7.	Create a method that will close the Admin GUI when the Alt + L keys are pressed.
         private void AdminGUIClose()
         {
+            traceListener.Flush();
+            traceListener.Close();
             SaveCsvFile();
             Close();
         }
@@ -252,6 +291,7 @@ namespace General
         private void LabelCreate()
         {
             LabelCommand.Content = "Keyboard Command:\nAlt - L: Save & Close Admin Control\nAlt - S : Save Data to Csv\nAlt - C: Create Staff" +
+                "\nAlt - R: Remove Staff\nAlt - U: Update Staff" +
                 "\nAlt - G: Generate New Staff Id\nAlt - N: Clear and Focus Staff Name\nTab: Navigate Control";
         }
 
@@ -270,6 +310,7 @@ namespace General
         {
             TextBlockStatus.Text = status_message;
             TextBlockFeedback.Text = feedback_message;
+
         }
 
         private void StatusBarClear()

@@ -18,7 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
-namespace General
+namespace Dictionary
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -29,7 +29,9 @@ namespace General
         public static Dictionary<int, string> MasterFile = new Dictionary<int, string>();
         string csvFilePath = Environment.CurrentDirectory + "\\MalinStaffNamesV2.csv";
 
-        
+        string logFile = "logFile.txt";
+        TextWriterTraceListener traceListener;
+
         public GeneralGUI()
         {
             InitializeComponent();
@@ -45,6 +47,8 @@ namespace General
             ShortCut_Command(Key.S, ModifierKeys.Control, SelectStaffData);
             ShortCut_Command(Key.A, ModifierKeys.Alt, OpenAdminControl);
 
+            traceListener = new TextWriterTraceListener(logFile);
+            Trace.Listeners.Add(traceListener);
         }
 
         #region ShortCut Command
@@ -76,6 +80,8 @@ namespace General
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            long beforeMemory = GC.GetTotalMemory(false);
+
             try
             {
                 using (StreamReader reader = new StreamReader(csvFilePath))
@@ -98,9 +104,14 @@ namespace General
                     }                    
                 }
 
+                long afterMemory = GC.GetTotalMemory(false);
+                long memoryUsageChange = afterMemory - beforeMemory;
+
                 stopwatch.Stop();
                 long elapsed = stopwatch.Elapsed.Ticks;
                 TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
+
+                Trace.TraceInformation($"Load CSV File- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ms");
             }
             catch (Exception ex)
             {
@@ -219,6 +230,9 @@ namespace General
         // Utilise a keyboard shortcut of Ctrl+Q.
         private void TerminateProgram()
         {
+            traceListener.Flush();
+            traceListener.Close();
+
             Close();
         }
 
@@ -265,6 +279,9 @@ namespace General
         // Utilise the Tab and keyboard keys with keyboard shortcut of Alt+A.
         private void OpenAdminControl()
         {
+            traceListener.Flush();
+            traceListener.Close();
+
             AdminGUI adminControl = new AdminGUI(MasterFile, TextBoxStaff_Id.Text);
             adminControl.ShowDialog();
             StatusBarClear();
