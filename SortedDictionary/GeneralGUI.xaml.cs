@@ -104,7 +104,7 @@ namespace SortedDictionary
                 long elapsed = stopwatch.Elapsed.Ticks;
                 TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
 
-                Trace.TraceInformation($"Load CSV File- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ms");
+                Trace.TraceInformation($"Load CSV File- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ticks");
             }
             catch (Exception ex)
             {
