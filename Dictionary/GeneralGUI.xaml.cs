@@ -111,7 +111,7 @@ namespace Dictionary
                 long elapsed = stopwatch.Elapsed.Ticks;
                 TimerTextBlock.Text = "Timer: " + elapsed.ToString() + " ticks";
 
-                Trace.TraceInformation($"Load CSV File- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ms");
+                Trace.TraceInformation($"Load CSV File- Memory Usage: {memoryUsageChange}, Performance Timer: {elapsed} ticks");
             }
             catch (Exception ex)
             {
@@ -163,6 +163,7 @@ namespace Dictionary
         // Filter method triggers when input StaffId textbox textChanged
         private void FilterTextBoxStaffId_TextChanged(object sender, TextChangedEventArgs e)
         {
+            
             StatusBarClear();
             FilterStaffId();
         }
@@ -207,9 +208,9 @@ namespace Dictionary
 
         // Filter method triggers when input StaffName textbox textChanged
         private void FilterTextBoxStaffName_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {            
             StatusBarClear();
-            FilterStaffName();
+            FilterStaffName();            
         }
 
         // Keypress filter input user in textbox StaffName
@@ -254,6 +255,15 @@ namespace Dictionary
             TextBoxStaff_Id.Focus();
             StatusBarFeedback("Ready", "TextBox Staff ID is cleared.");
         }
+
+        //private void StaffId_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    TextBoxStaff_Name.Clear();
+        //}
+        //private void StaffName_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    TextBoxStaff_Id.Clear();
+        //}
 
         // 4.8.	Create a method for the filtered and selectable list box which will populate the two text boxes when a staff record is selected.
         // Utilise the Tab and keyboard keys with keyboard shortcut of Ctrl+F.

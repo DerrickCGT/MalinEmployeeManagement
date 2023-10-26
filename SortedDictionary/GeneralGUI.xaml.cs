@@ -248,6 +248,19 @@ namespace SortedDictionary
             StatusBarFeedback("Ready", "TextBox Staff ID is cleared.");
         }
 
+        //// PreviewKeyDown Event for TextBoxStaff_Id to clear the text for staffName, prevent conflicting of filtering
+        //private void StaffId_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    TextBoxStaff_Name.Clear();
+        //}
+
+        //// PreviewKeyDown Event for TextBoxStaff_Name to clear the text for staffId, prevent conflicting of filtering
+        //private void StaffName_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    TextBoxStaff_Id.Clear();
+        //}
+
+
         // 4.8.	Create a method for the filtered and selectable list box which will populate the two text boxes when a staff record is selected.
         // Utilise the Tab and keyboard keys with keyboard shortcut of Ctrl+F.
         private void SelectStaffData()

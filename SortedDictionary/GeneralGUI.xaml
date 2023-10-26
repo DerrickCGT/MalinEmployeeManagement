@@ -36,6 +36,11 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
+        <TextBox x:Name="TextBoxStaff_Id" Grid.Column="1" TextChanged="FilterTextBoxStaffId_TextChanged" PreviewTextInput="KeyPressTextBoxStaff_Id" 
+          HorizontalAlignment="Center" Margin="0,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="20"/>
+        <TextBox x:Name="TextBoxStaff_Name" Grid.Column="1" TextChanged="FilterTextBoxStaffName_TextChanged" PreviewTextInput="KeyPressTextBoxStaff_Name" 
+          HorizontalAlignment="Center" Margin="0,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="20"/>
+
         <ListBox x:Name="listBoxFilter" Grid.Column="1" Margin="20,217,20,50" Width="220"  BorderBrush="Black">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -56,10 +61,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBox x:Name="TextBoxStaff_Id" Grid.Column="1" TextChanged="FilterTextBoxStaffId_TextChanged" PreviewTextInput="KeyPressTextBoxStaff_Id" 
-                 HorizontalAlignment="Center" Margin="0,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="20"/>
-        <TextBox x:Name="TextBoxStaff_Name" Grid.Column="1"  TextChanged="FilterTextBoxStaffName_TextChanged" PreviewTextInput="KeyPressTextBoxStaff_Name" 
-                 HorizontalAlignment="Center" Margin="0,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="20"/>
+       
         <Label x:Name="LabelStaff_Id" Grid.Column="1" Content="Staff ID" HorizontalAlignment="Left" Margin="35,114,0,0" Width="50" VerticalAlignment="Top"/>
         <Label x:Name="LabelStaff_Name" Grid.Column="1" Content="Staff Name" HorizontalAlignment="Left" Margin="35,160,0,0" Width="70" VerticalAlignment="Top"/>
 
