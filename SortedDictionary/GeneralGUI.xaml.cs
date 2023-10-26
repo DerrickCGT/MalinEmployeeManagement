@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SortedDictionary
 {
@@ -248,17 +241,33 @@ namespace SortedDictionary
             StatusBarFeedback("Ready", "TextBox Staff ID is cleared.");
         }
 
-        //// PreviewKeyDown Event for TextBoxStaff_Id to clear the text for staffName, prevent conflicting of filtering
-        //private void StaffId_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    TextBoxStaff_Name.Clear();
-        //}
+        // PreviewKeyDown Event for TextBoxStaff_Id to clear the text for staffName, prevent conflicting of filtering
+        private void StaffId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab)
+            {
+                return; // If Tab is pressed, do nothing and return
+            }
+            else
+            {
+                TextBoxStaff_Name.Clear();
+            }
+            
+        }
 
-        //// PreviewKeyDown Event for TextBoxStaff_Name to clear the text for staffId, prevent conflicting of filtering
-        //private void StaffName_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    TextBoxStaff_Id.Clear();
-        //}
+        // PreviewKeyDown Event for TextBoxStaff_Name to clear the text for staffId, prevent conflicting of filtering
+        private void StaffName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab)
+            {
+                return; // If Tab is pressed, do nothing and return
+            }
+            else
+            {
+                TextBoxStaff_Id.Clear();
+            }
+            
+        }
 
 
         // 4.8.	Create a method for the filtered and selectable list box which will populate the two text boxes when a staff record is selected.
@@ -270,8 +279,8 @@ namespace SortedDictionary
                 // Ref:https://stackoverflow.com/questions/6404520/how-to-get-listbox-selected-item-as-keyvaluepairstring-string-in-c
                 var selectedItem = (KeyValuePair<int, string>)listBoxFilter.SelectedItem;
 
-                TextBoxStaff_Id.Text = selectedItem.Key.ToString();
                 TextBoxStaff_Name.Text = selectedItem.Value;
+                TextBoxStaff_Id.Text = selectedItem.Key.ToString();
                 StatusBarFeedback("Successful", $"Staff ID: {selectedItem.Key} is selected.");
             }
         }
