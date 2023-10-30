@@ -65,7 +65,7 @@
         <Label x:Name="LabelStaff_Id" Grid.Column="1" Content="Staff ID" HorizontalAlignment="Left" Margin="35,114,0,0" Width="50" VerticalAlignment="Top"/>
         <Label x:Name="LabelStaff_Name" Grid.Column="1" Content="Staff Name" HorizontalAlignment="Left" Margin="35,160,0,0" Width="70" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Height="219" Margin="10,118,0,0" Width="200" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Keyboard Command:"/><LineBreak/><Run Text="Alt-A: Open Admin Control Panel"/><LineBreak/><Run Text="Ctrl-Q: Terminate General Form"/><LineBreak/><Run Text="Ctrl-L: Load CSV File"/><LineBreak/><Run Text="Ctrl-I: Clear and Focus Staff ID"/><LineBreak/><Run Text="Ctrl-N Clear and Focus Staff Name"/><LineBreak/><Run Text="Spacebar: Select record"/><LineBreak/><Run Text="Ctrl-S: Populate record to textbox"/><LineBreak/><Run Text="Tab: Navigate Control"/></TextBlock>
+        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Height="219" Margin="10,118,0,0" Width="200" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Keyboard Command:"/><LineBreak/><Run Text="Alt-A: Open Admin Control Panel"/><LineBreak/><Run Text="Ctrl-Q: Terminate General Form"/><LineBreak/><Run Text="Ctrl-L: Load CSV File"/><LineBreak/><Run Text="Ctrl-I: Clear and Focus Staff ID"/><LineBreak/><Run Text="Ctrl-N Clear and Focus Staff Name"/><LineBreak/><Run Text="Enter: Select and Populate Record"/><LineBreak/></TextBlock>
 
 
         <StatusBar Grid.ColumnSpan="3" Height="25" VerticalAlignment="Bottom">

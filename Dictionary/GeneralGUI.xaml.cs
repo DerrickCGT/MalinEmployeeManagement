@@ -44,7 +44,8 @@ namespace Dictionary
             ShortCut_Command(Key.Q, ModifierKeys.Control, TerminateProgram);
             ShortCut_Command(Key.I, ModifierKeys.Control, ClearTextBox_StaffId);
             ShortCut_Command(Key.N, ModifierKeys.Control, ClearTextBox_StaffName);
-            ShortCut_Command(Key.S, ModifierKeys.Control, SelectStaffData);
+            //ShortCut_Command(Key.S, ModifierKeys.Control, SelectStaffData);
+            ShortCut_Command2(Key.Enter, SelectStaffData);
             ShortCut_Command(Key.A, ModifierKeys.Alt, OpenAdminControl);
 
             traceListener = new TextWriterTraceListener(logFile);
@@ -65,6 +66,12 @@ namespace Dictionary
         {
             RoutedCommand command = new RoutedCommand();
             command.InputGestures.Add(new KeyGesture(input, modifierKeys));
+            CommandBindings.Add(new CommandBinding(command, (sender, e) => function()));
+        }
+        private void ShortCut_Command2(Key input, Action function)
+        {
+            RoutedCommand command = new RoutedCommand();
+            command.InputGestures.Add(new KeyGesture(input));
             CommandBindings.Add(new CommandBinding(command, (sender, e) => function()));
         }
         #endregion
@@ -308,10 +315,10 @@ namespace Dictionary
         // Utilise the Tab and keyboard keys with keyboard shortcut of Alt+A.
         private void OpenAdminControl()
         {
-            traceListener.Flush();
-            traceListener.Close();
+            //traceListener.Flush();
+            //traceListener.Close();
 
-            AdminGUI adminControl = new AdminGUI(MasterFile, TextBoxStaff_Id.Text);
+            AdminGUI adminControl = new AdminGUI(MasterFile, TextBoxStaff_Id.Text, traceListener);
             adminControl.ShowDialog();
             StatusBarClear();
         }

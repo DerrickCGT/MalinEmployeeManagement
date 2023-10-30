@@ -26,12 +26,12 @@ namespace SortedDictionary
         string csvFilePath = Environment.CurrentDirectory + "\\MalinStaffNamesV2.csv";
         public int selectedStaffId;
 
-        string logFile = "logFile.txt";
+        //string logFile = "logFile.txt";
         TextWriterTraceListener traceListener;
 
 
         // Method to initialise AdminGUI
-        public AdminGUI(SortedDictionary<int, string> masterFile, string id)
+        public AdminGUI(SortedDictionary<int, string> masterFile, string id, TextWriterTraceListener trace)
         {
             InitializeComponent();
             _masterFile = masterFile;
@@ -52,8 +52,9 @@ namespace SortedDictionary
             ShortCut_Command(Key.S, ModifierKeys.Alt, SaveCsvFile);
             ShortCut_Command(Key.N, ModifierKeys.Alt, ClearTextBox_staffName);
 
-            traceListener = new TextWriterTraceListener(logFile);
-            Trace.Listeners.Add(traceListener);
+            traceListener = trace;
+            //traceListener = new TextWriterTraceListener(logFile);
+            //Trace.Listeners.Add(traceListener);
         }
 
         #region ShortCut Command
@@ -274,8 +275,8 @@ namespace SortedDictionary
         // 5.7.	Create a method that will close the Admin GUI when the Alt + L keys are pressed.
         private void AdminGUIClose()
         {
-            traceListener.Flush();
-            traceListener.Close();
+            //traceListener.Flush();
+            //traceListener.Close();
             SaveCsvFile();
             Close();
         }
@@ -295,7 +296,7 @@ namespace SortedDictionary
         {
             LabelCommand.Content = "Keyboard Command:\nAlt - L: Save & Close Admin Control\nAlt - S : Save Data to Csv\nAlt - C: Create Staff" +
                 "\nAlt - R: Remove Staff\nAlt - U: Update Staff" +
-                "\nAlt - G: Generate New Staff Id\nAlt - N: Clear and Focus Staff Name\nTab: Navigate Control";
+                "\nAlt - G: Generate New Staff Id\nAlt - N: Clear and Focus Staff Name";
         }
 
         // Method to create customize command shortcut for Update and Remove Only.
