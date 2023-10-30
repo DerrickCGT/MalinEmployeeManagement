@@ -206,7 +206,7 @@ namespace SortedDictionary
                 // Check duplicate and generate random ID if not duplicate.
                 do
                 {
-                    generatedId = random.Next(700000000, 799999999);
+                    generatedId = random.Next(770000000, 779999999);
                 } while (_masterFile.ContainsKey(generatedId));
 
                 TextBoxStaff_Id.Text = generatedId.ToString();
@@ -277,8 +277,10 @@ namespace SortedDictionary
         {
             //traceListener.Flush();
             //traceListener.Close();
-            SaveCsvFile();
+            
+            SaveCsvFile()
             Close();
+            
         }
         #endregion
 
