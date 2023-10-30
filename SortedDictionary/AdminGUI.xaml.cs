@@ -278,7 +278,7 @@ namespace SortedDictionary
             //traceListener.Flush();
             //traceListener.Close();
             
-            SaveCsvFile()
+            SaveCsvFile();
             Close();
             
         }
